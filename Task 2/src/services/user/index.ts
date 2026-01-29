@@ -1,3 +1,4 @@
 import { getAllUsers } from "services/user/getAllUsers";
 import { createUser } from "services/user/createUser";
-export { getAllUsers, createUser };
+import { getUserById } from "services/user/getUserById";
+export { getAllUsers, createUser, getUserById };

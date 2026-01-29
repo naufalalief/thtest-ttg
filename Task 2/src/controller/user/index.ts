@@ -1,3 +1,4 @@
 import { getAllUsersController } from "controller/user/getAllUsers";
 import { createUserController } from "controller/user/createUser";
-export { getAllUsersController, createUserController };
+import { getUserByIdController } from "controller/user/getUserById";
+export { getAllUsersController, createUserController, getUserByIdController };
