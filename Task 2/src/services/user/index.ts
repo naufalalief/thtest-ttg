@@ -1,4 +1,3 @@
 import { getAllUsers } from "services/user/getAllUsers";
-
-const getAllUsersService = getAllUsers;
-export default getAllUsersService;
+import { createUser } from "services/user/createUser";
+export { getAllUsers, createUser };

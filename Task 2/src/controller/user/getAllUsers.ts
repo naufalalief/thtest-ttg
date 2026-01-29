@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import getAllUsersService from "services/user";
+import { getAllUsers } from "services/user";
 
 export async function getAllUsersController(req: Request, res: Response) {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
-    const { users, total } = await getAllUsersService(page, limit);
+    const { users, total } = await getAllUsers(page, limit);
     res.status(200).json({
       success: true,
       data: users,
