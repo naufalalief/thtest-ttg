@@ -1,22 +1,19 @@
 {
-  "name": "task-2",
+  "name": "backend-api-pengguna",
   "version": "1.0.0",
+  "description": "backend api pengguna untuk task 2 dari take home test",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naufalalief/thtest-ttg.git"
+  },
+  "author": "Naufal Alief",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "nodemon": "^3.1.11",
-    "prisma": "^7.3.0"
-  }
+  "bugs": {
+    "url": "https://github.com/naufalalief/thtest-ttg/issues"
+  },
+  "homepage": "https://github.com/naufalalief/thtest-ttg#readme"
 }
