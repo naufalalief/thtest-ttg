@@ -1,4 +1,4 @@
-import { getAllUsers } from "services/user/getAllUsers";
-import { createUser } from "services/user/createUser";
-import { getUserById } from "services/user/getUserById";
-export { getAllUsers, createUser, getUserById };
+import { getAllUsers as getAllUserService } from "services/user/getAllUsers";
+import { createUser as createUserService } from "services/user/createUser";
+import { getUserById as getUserByIdService } from "services/user/getUserById";
+export { getAllUserService, createUserService, getUserByIdService };

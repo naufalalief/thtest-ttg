@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUser } from "services/user/createUser";
+import { createUserService } from "services/user";
 
 export async function createUserController(req: Request, res: Response) {
   try {
@@ -10,7 +10,7 @@ export async function createUserController(req: Request, res: Response) {
         message: "Email dan password wajib diisi",
       });
     }
-    const user = await createUser({ email, fullname, password });
+    const user = await createUserService({ email, fullname, password });
     res.status(201).json({
       success: true,
       data: user,

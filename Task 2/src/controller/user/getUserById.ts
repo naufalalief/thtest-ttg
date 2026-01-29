@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getUserById } from "services/user";
+import { getUserByIdService } from "services/user";
 
 export async function getUserByIdController(req: Request, res: Response) {
   const id = req.params.id as string;
@@ -9,7 +9,7 @@ export async function getUserByIdController(req: Request, res: Response) {
       message: "ID harus diisi",
     });
   }
-  const user = await getUserById(id);
+  const user = await getUserByIdService(id);
   if (!user) {
     return res.status(404).json({
       success: false,
