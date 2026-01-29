@@ -1,52 +1,52 @@
 // =============================
 // Ambil elemen-elemen penting
 // =============================
-const get = id => document.getElementById(id);
-const form = get("registerForm");
-const fullname = get("fullname");
-const email = get("email");
-const password = get("password");
-const confirmPassword = get("confirmPassword");
-const fullnameError = get("fullnameError");
-const emailError = get("emailError");
-const passwordError = get("passwordError");
-const confirmPasswordError = get("confirmPasswordError");
-const successMessage = get("successMessage");
+const form = document.getElementById("registerForm");
+const fullname = document.getElementById("fullname");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
+const fullnameError = document.getElementById("fullnameError");
+const emailError = document.getElementById("emailError");
+const passwordError = document.getElementById("passwordError");
+const confirmPasswordError = document.getElementById("confirmPasswordError");
+const successMessage = document.getElementById("successMessage");
 
 // =============================
 // Fungsi validasi email
 // =============================
-const validateEmail = emailValue =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+function validateEmail(emailValue) {
+  // Regex sederhana untuk validasi email
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+}
 
 // =============================
 // Validasi Nama Lengkap
 // =============================
 function validateFullname() {
-  const value = fullname.value.trim();
-  if (!value) {
+  if (fullname.value.trim() === "") {
     fullnameError.textContent = "Nama lengkap wajib diisi.";
     return false;
+  } else {
+    fullnameError.textContent = "";
+    return true;
   }
-  fullnameError.textContent = "";
-  return true;
 }
 
 // =============================
 // Validasi Email
 // =============================
 function validateEmailField() {
-  const value = email.value.trim();
-  if (!value) {
+  if (email.value.trim() === "") {
     emailError.textContent = "Email wajib diisi.";
     return false;
-  }
-  if (!validateEmail(value)) {
+  } else if (!validateEmail(email.value.trim())) {
     emailError.textContent = "Format email tidak valid.";
     return false;
+  } else {
+    emailError.textContent = "";
+    return true;
   }
-  emailError.textContent = "";
-  return true;
 }
 
 // =============================
@@ -56,9 +56,10 @@ function validatePassword() {
   if (password.value.length < 8) {
     passwordError.textContent = "Password minimal 8 karakter.";
     return false;
+  } else {
+    passwordError.textContent = "";
+    return true;
   }
-  passwordError.textContent = "";
-  return true;
 }
 
 // =============================
@@ -69,13 +70,13 @@ function validateConfirmPassword() {
     confirmPasswordError.textContent =
       "Konfirmasi password minimal 8 karakter.";
     return false;
-  }
-  if (confirmPassword.value !== password.value) {
+  } else if (confirmPassword.value !== password.value) {
     confirmPasswordError.textContent = "Konfirmasi password tidak cocok.";
     return false;
+  } else {
+    confirmPasswordError.textContent = "";
+    return true;
   }
-  confirmPasswordError.textContent = "";
-  return true;
 }
 
 // =============================
@@ -86,7 +87,7 @@ fullname.addEventListener("input", validateFullname);
 email.addEventListener("blur", validateEmailField);
 email.addEventListener("input", validateEmailField);
 password.addEventListener("blur", validatePassword);
-password.addEventListener("input", () => {
+password.addEventListener("input", function () {
   validatePassword();
   validateConfirmPassword(); // update error konfirmasi jika password berubah
 });
@@ -96,7 +97,7 @@ confirmPassword.addEventListener("input", validateConfirmPassword);
 // =============================
 // Event Listener: Submit Form
 // =============================
-form.addEventListener("submit", async function (e) {
+form.addEventListener("submit", function (e) {
   e.preventDefault();
   successMessage.textContent = "";
   // Validasi semua field
@@ -105,32 +106,39 @@ form.addEventListener("submit", async function (e) {
   const validPassword = validatePassword();
   const validConfirm = validateConfirmPassword();
   if (validFullname && validEmail && validPassword && validConfirm) {
-    try {
-      const res = await fetch("http://localhost:3000/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: fullname.value,
-          email: email.value,
-          password: password.value,
-        }),
+    // Kirim data ke backend Express
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullname: fullname.value,
+        email: email.value,
+        password: password.value,
+      }),
+    })
+      .then(async res => {
+        const data = await res.json();
+        if (res.ok) {
+          successMessage.textContent = "Pendaftaran Berhasil";
+          form.reset();
+          setTimeout(() => {
+            fullnameError.textContent = "";
+            emailError.textContent = "";
+            passwordError.textContent = "";
+            confirmPasswordError.textContent = "";
+          }, 100);
+          console.log(data);
+        } else {
+          // Tampilkan pesan error dari backend
+          if (data.message) {
+            emailError.textContent = data.message;
+          }
+        }
+      })
+      .catch(() => {
+        successMessage.textContent = "Gagal terhubung ke server.";
       });
-      const data = await res.json();
-      if (res.ok) {
-        successMessage.textContent = "Pendaftaran Berhasil";
-        form.reset();
-        setTimeout(() => {
-          fullnameError.textContent = "";
-          emailError.textContent = "";
-          passwordError.textContent = "";
-          confirmPasswordError.textContent = "";
-        }, 100);
-        console.log(data);
-      } else if (data.message) {
-        emailError.textContent = data.message;
-      }
-    } catch {
-      successMessage.textContent = "Gagal terhubung ke server.";
-    }
   }
 });

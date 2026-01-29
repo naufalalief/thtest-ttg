@@ -4,10 +4,10 @@ import { createUserService } from "services/user";
 export async function createUserController(req: Request, res: Response) {
   try {
     const { email, fullname, password } = req.body;
-    if (!email || !password) {
+    if (!email || !fullname || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email dan password wajib diisi",
+        message: "Email, fullname, dan password harus diisi",
       });
     }
     const user = await createUserService({ email, fullname, password });
