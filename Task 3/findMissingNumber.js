@@ -1,14 +1,15 @@
 const readline = require("readline");
 
 function findMissingNumber(arr) {
-  if (!Array.isArray(arr) || arr.length < 2) return null;
+  if (!Array.isArray(arr) || arr.length < 2) return [];
   arr = Array.from(new Set(arr)).sort((a, b) => a - b);
-  for (let i = 1; i < arr.length; i++) {
-    if (arr[i] !== arr[i - 1] + 1) {
-      return arr[i - 1] + 1;
+  const missing = [];
+  for (let i = arr[0]; i < arr[arr.length - 1]; i++) {
+    if (!arr.includes(i)) {
+      missing.push(i);
     }
   }
-  return null;
+  return missing;
 }
 
 if (require.main === module) {
@@ -21,7 +22,7 @@ if (require.main === module) {
     arrStr => {
       const arr = arrStr.split(",").map(Number);
       const result = findMissingNumber(arr);
-      if (result !== null && !isNaN(result)) {
+      if (Array.isArray(result) && result.length > 0) {
         console.log("Angka yang hilang:", result);
       } else {
         console.log("Input tidak valid atau tidak ada angka hilang.");
